@@ -1,0 +1,135 @@
+:root {
+
+    //      variables
+
+    --col_grey : rgba(255, 255, 255, 0.2);
+    --col_grey_2 : rgba(255, 255, 255, 0.12);
+    --col_black : rgba( 0, 0, 0, 0.4);
+    --col_black_2 : rgba( 0, 0, 0, 0.25);
+    --col_green : #08ff00;
+}
+
+
+body {
+
+    display: grid;
+    grid-template: repeat(12, 1fr)/repeat(12, 1fr);
+}
+
+#text_area {
+
+    grid-area: 3/3/8/-3;
+}
+
+.text-center {
+    
+    grid-area: 1/5/2/-5;
+}
+
+.keyboard {
+    
+    //! ***   dont forget to chage this fir bootstrap class in html
+
+    position: fixed;
+
+    left: 0;
+    bottom: 0;
+    
+    //! ***   dont forget to chage this fir bootstrap class in html
+
+    width: 100%;
+    padding: 5px 0;
+
+    background-color: #004134;
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+    transition: bottom 0.4s;
+}
+
+.keyboard__hidden {
+
+    top: 100%;
+}
+
+.keyboard__keys {
+
+    //! ***   dont forget to chage this fir bootstrap class in html
+
+    text-align: center;
+}
+
+.keyboard__key {
+
+    height: 45px;
+    width: 6%;
+    max-width: 90px;
+    margin: 3px;
+    border-radius: 3px;
+    
+
+    //! ***   dont forget to chage this fir bootstrap class in html
+
+    border: none;
+    background-color: var(--col_grey);
+    
+    //! ***   dont forget to chage this fir bootstrap class in html
+
+    color: var(--white);
+
+    font-size: 1.05rem;
+    outline: none;
+    cursor: pointer;
+
+    
+
+    //! ***   dont forget to chage this fir bootstrap class in html
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    vertical-align: top;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+    position: relative;
+
+    &:active {
+
+        background-color: var(--col_grey_2);
+    }
+}
+
+.keyboard__key--wide {
+
+    width : 12%;
+}
+
+.keyboard__key--extra-wide {
+    
+    width: 36%;
+    max-width: 500px;
+}
+
+.keyboard__key--activalable {
+
+    &:after{
+
+        content: " ";
+        top : 10px;
+        right: 10px;
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        background-color : var(--col_black);
+        border-radius : 50%;
+    }
+}
+
+.keyboard__key--active::after {
+
+    background-color : var(--col_green);
+}
+
+.keyboard__key--dark {
+
+    background-color: var(--col_black_2);
+
+}
