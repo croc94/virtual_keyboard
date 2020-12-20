@@ -14,8 +14,8 @@ class Virtual_keyboard {
         this.eventHandlers.onclose  = null;
 
         this.properties = {};
-        this.eventHandlers.value = '';
-        this.eventHandlers.capsLock = false;
+        this.properties.value = '';
+        this.properties.capsLock = false;
     }
 
     init () {
@@ -24,12 +24,24 @@ class Virtual_keyboard {
         this.elements.main = document.createElement('div');
         this.elements.keysContainer = document.createElement('div');
 
-        //setup main elements
+        //setup main elements(add classes to main elements)
         this.elements.main.classList.add('keyboard', 'keyboard__hidden');
         this.elements.keysContainer.classList.add('keyboard__keys');
+        this.elements.keysContainer.appendChild(this._createKeys());
 
+
+        this.elements.keys = this.elements.keysContainer.querySelectorAll('.keyboard__key');
+
+        //add to dom
         this.elements.main.appendChild(this.elements.keysContainer);
         document.body.appendChild(this.elements.main);
+
+        //autmaticly use keyboard for elements with .use-keyboard-input
+        document.querySelectorAll('.use-keyboard-input').forEach(element => {
+            this.open(element.value, currentValue => {
+                element.value = currentValue;
+            });
+        })
     };
 
     _createKeys () {
@@ -50,7 +62,7 @@ class Virtual_keyboard {
         keyLayout.forEach(key => {
 
             const keyElement =  document.createElement('button');
-            const insertLineBreak = ['backspace', 'p', 'enter', '?', ].indexOf(key) !== -1;
+            const insertLineBreak = ['Backspace', 'p', 'Enter', '?', ].indexOf(key) !== -1;
 
             //add classes
 
@@ -63,7 +75,7 @@ class Virtual_keyboard {
                     keyElement.innerHTML = createIconHtml ('backspace-fill');
 
                     keyElement.addEventListener('click', () => {
-                        this.properties.value = this.properties.substring (0, this.properties.value.length - 1);
+                        this.properties.value = this.properties.value.substring (0, this.properties.value.length - 1);
                     this._triggerEvent('oninput');
 
                     })
@@ -128,37 +140,57 @@ class Virtual_keyboard {
 
                     break;
             }
-        })
+
+            fragment.appendChild(keyElement);
+
+            if (insertLineBreak) {
+                fragment.appendChild(document.createElement('br'));
+            }
+        });
+
+        return fragment;
     };
 
     _triggerEvent (handlerName) {
-        console.log(`Event triggered! Event Name ${handlerName}`);
+
+        if (typeof this.eventHandlers[handlerName] == 'function') {
+
+            this.eventHandlers[handlerName](this.properties.value);
+        }
     };
 
     _toggleCapsLock (handlerName) {
-        console.log(`CapsLock Toggled `);
+        this.properties.capsLock = !this.properties.capsLock;
+
+        for(const key of this.elements.keys) {
+            if (key.childElementCount === 0) {
+                key.textContent = this.properties.capsLock ? key.textContent.toUpperCase() : key.textContent.toLowerCase();
+            }
+        }
     };
 
     open (initialValue, oninput, onclose) {
+
+        this.properties.value = initialValue || '';
+        this.eventHandlers.oninput = oninput;
+        this.eventHandlers.onclose = onclose;
+        this.elements.main.classList.remove('keyboard__hidden');
 
     };
 
     close () {
 
+        this.properties.value = '';
+        this.eventHandlers.oninput = oninput;
+        this.eventHandlers.onclose = onclose;
+        this.elements.main.classList.add('keyboard__hidden')
+        
     };
-
-    /* check_method () {
-        console.log (`check ${this.elements.main} element`);
-        console.log (`check ${this.elements.keysContainer} element`);
-        console.log (`check ${this.elements.keys} element`);
-    } */
 }
 
 window.addEventListener ('DOMContentLoaded', () => {
     
-    v_keyboard.init()
+    v_keyboard.init();
 })
 
 let v_keyboard = new Virtual_keyboard ();
-
-//v_keyboard.check_method();

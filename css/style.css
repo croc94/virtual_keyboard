@@ -35,12 +35,16 @@ body {
   background-color: #004134;
   -webkit-box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
           box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
   -webkit-transition: bottom 0.4s;
   transition: bottom 0.4s;
 }
 
 .keyboard__hidden {
-  top: 100%;
+  bottom: -100%;
 }
 
 .keyboard__keys {

@@ -42,12 +42,13 @@ body {
 
     background-color: #004134;
     box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+    user-select: none;
     transition: bottom 0.4s;
 }
 
 .keyboard__hidden {
 
-    top: 100%;
+    bottom : -100%;
 }
 
 .keyboard__keys {
