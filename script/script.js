@@ -38,9 +38,11 @@ class Virtual_keyboard {
 
         //autmaticly use keyboard for elements with .use-keyboard-input
         document.querySelectorAll('.use-keyboard-input').forEach(element => {
-            this.open(element.value, currentValue => {
-                element.value = currentValue;
-            });
+            element.addEventListener('focus', () => {
+                this.open(element.value, currentValue => {
+                    element.value = currentValue;
+                });
+            })
         })
     };
 
