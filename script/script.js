@@ -4,8 +4,7 @@ class Virtual_keyboard {
 
     constructor () {
         this.elements = {};
-        //this.elements.main = null;
-        this.elements.main = 5;
+        this.elements.main = null;
         this.elements.keysContainer = null;
         this.elements.keys = [];
 
@@ -42,8 +41,95 @@ class Virtual_keyboard {
                 this.open(element.value, currentValue => {
                     element.value = currentValue;
                 });
+
+                
+
+                //key press events for buttons
+                window.addEventListener('keydown', (eventPress) => {
+
+                    //when keuboard block isn't hidden, listen keyboard events
+                    if (!document.querySelector('.keyboard').classList.contains('keyboard__hidden')) {
+
+                        eventPress.stopPropagation();
+                        eventPress.preventDefault();
+
+                        this.elements.keys.forEach(item => {
+
+                            if (item.getAttribute('data-key') === eventPress.key) {
+                                item.classList.add('keyboard__key--press');
+                            };
+                        });
+
+                        switch (eventPress.key) {
+                            case 'Backspace':
+
+                                this.properties.value = this.properties.value.substring (0, this.properties.value.length - 1);
+                                this._triggerEvent('oninput');
+
+                                break;
+            
+                            case 'CapsLock':
+            
+                                this._toggleCapsLock ();
+                                this.elements.keys.forEach(elem =>{
+                                    if (elem.getAttribute('data-key') === 'CapsLock') {
+                                        elem.classList.toggle('keyboard__key--active', this.properties.capsLock);
+                                    }
+                                }) 
+            
+                                break;
+            
+                            case 'Enter':
+
+                                this.properties.value += '\n';
+                                this._triggerEvent('oninput');
+            
+                                break;
+            
+                            case 'space':
+
+                                this.properties.value += ' ';
+                                this._triggerEvent('oninput');
+            
+                                break;
+            
+                            case 'done':
+
+                                this.close ();
+                                this._triggerEvent('onclose');
+            
+                                break;
+            
+                            default:
+
+                                this.properties.value += this.properties.capsLock ? eventPress.key.toUpperCase() : eventPress.key.toLowerCase();
+                                this._triggerEvent('oninput');
+            
+                                break;
+                        }
+                        
+                    }
+                })
+
+                //key up events for buttons
+                window.addEventListener('keyup', (eventPress) => {
+
+                    //when keuboard block isn't hidden, listen keyboard events
+                    if (!document.querySelector('.keyboard').classList.contains('keyboard__hidden')) {
+
+                        eventPress.stopPropagation();
+                        eventPress.preventDefault();
+
+                        this.elements.keys.forEach(item => {
+
+                            if (item.getAttribute('data-key') === eventPress.key) {
+                                item.classList.remove('keyboard__key--press');
+                            };
+                        });
+                    }
+                })
             })
-        })
+        });
     };
 
     _createKeys () {
@@ -69,6 +155,7 @@ class Virtual_keyboard {
             //add classes
 
             keyElement.setAttribute('type', 'button');
+            keyElement.setAttribute('data-key', key);
             keyElement.classList.add('keyboard__key');
 
             switch (key) {

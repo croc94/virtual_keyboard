@@ -109,4 +109,10 @@ body {
 .keyboard__key--dark {
   background-color: var(--col_black_2);
 }
+
+.keyboard__key--press {
+  border-radius: 25%;
+  -webkit-transform: scale(1.3);
+          transform: scale(1.3);
+}
 /*# sourceMappingURL=style.css.map */

@@ -134,3 +134,8 @@ body {
     background-color: var(--col_black_2);
 
 }
+
+.keyboard__key--press {
+    border-radius : 25%;
+    transform: scale(1.3);
+}
